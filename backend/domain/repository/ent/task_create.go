@@ -188,15 +188,15 @@ func (tc *TaskCreate) createSpec() (*Task, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := tc.mutation.Description(); ok {
 		_spec.SetField(task.FieldDescription, field.TypeString, value)
-		_node.Description = value
+		_node.Description = &value
 	}
 	if value, ok := tc.mutation.Deadline(); ok {
 		_spec.SetField(task.FieldDeadline, field.TypeTime, value)
-		_node.Deadline = value
+		_node.Deadline = &value
 	}
 	if value, ok := tc.mutation.CompletdAt(); ok {
 		_spec.SetField(task.FieldCompletdAt, field.TypeTime, value)
-		_node.CompletdAt = value
+		_node.CompletdAt = &value
 	}
 	if value, ok := tc.mutation.CreatedAt(); ok {
 		_spec.SetField(task.FieldCreatedAt, field.TypeTime, value)
@@ -204,7 +204,7 @@ func (tc *TaskCreate) createSpec() (*Task, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := tc.mutation.UpdatedAt(); ok {
 		_spec.SetField(task.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
+		_node.UpdatedAt = &value
 	}
 	if nodes := tc.mutation.TagsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

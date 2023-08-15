@@ -20,15 +20,15 @@ type Task struct {
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
 	// Description holds the value of the "description" field.
-	Description string `json:"description,omitempty"`
+	Description *string `json:"description,omitempty"`
 	// Deadline holds the value of the "deadline" field.
-	Deadline time.Time `json:"deadline,omitempty"`
+	Deadline *time.Time `json:"deadline,omitempty"`
 	// CompletdAt holds the value of the "completd_at" field.
-	CompletdAt time.Time `json:"completd_at,omitempty"`
+	CompletdAt *time.Time `json:"completd_at,omitempty"`
 	// CreatedAt holds the value of the "created_at" field.
 	CreatedAt time.Time `json:"created_at,omitempty"`
 	// UpdatedAt holds the value of the "updated_at" field.
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the TaskQuery when eager-loading is set.
 	Edges        TaskEdges `json:"edges"`
@@ -95,19 +95,22 @@ func (t *Task) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field description", values[i])
 			} else if value.Valid {
-				t.Description = value.String
+				t.Description = new(string)
+				*t.Description = value.String
 			}
 		case task.FieldDeadline:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field deadline", values[i])
 			} else if value.Valid {
-				t.Deadline = value.Time
+				t.Deadline = new(time.Time)
+				*t.Deadline = value.Time
 			}
 		case task.FieldCompletdAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field completd_at", values[i])
 			} else if value.Valid {
-				t.CompletdAt = value.Time
+				t.CompletdAt = new(time.Time)
+				*t.CompletdAt = value.Time
 			}
 		case task.FieldCreatedAt:
 			if value, ok := values[i].(*sql.NullTime); !ok {
@@ -119,7 +122,8 @@ func (t *Task) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
 			} else if value.Valid {
-				t.UpdatedAt = value.Time
+				t.UpdatedAt = new(time.Time)
+				*t.UpdatedAt = value.Time
 			}
 		default:
 			t.selectValues.Set(columns[i], values[i])
@@ -165,20 +169,28 @@ func (t *Task) String() string {
 	builder.WriteString("name=")
 	builder.WriteString(t.Name)
 	builder.WriteString(", ")
-	builder.WriteString("description=")
-	builder.WriteString(t.Description)
+	if v := t.Description; v != nil {
+		builder.WriteString("description=")
+		builder.WriteString(*v)
+	}
 	builder.WriteString(", ")
-	builder.WriteString("deadline=")
-	builder.WriteString(t.Deadline.Format(time.ANSIC))
+	if v := t.Deadline; v != nil {
+		builder.WriteString("deadline=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
 	builder.WriteString(", ")
-	builder.WriteString("completd_at=")
-	builder.WriteString(t.CompletdAt.Format(time.ANSIC))
+	if v := t.CompletdAt; v != nil {
+		builder.WriteString("completd_at=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
 	builder.WriteString(", ")
 	builder.WriteString("created_at=")
 	builder.WriteString(t.CreatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("updated_at=")
-	builder.WriteString(t.UpdatedAt.Format(time.ANSIC))
+	if v := t.UpdatedAt; v != nil {
+		builder.WriteString("updated_at=")
+		builder.WriteString(v.Format(time.ANSIC))
+	}
 	builder.WriteByte(')')
 	return builder.String()
 }

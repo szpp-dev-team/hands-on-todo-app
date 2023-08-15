@@ -16,11 +16,11 @@ func (Task) Fields() []ent.Field {
 	return []ent.Field{
 		field.Int("id"),
 		field.String("name"),
-		field.String("description").Optional(),
-		field.Time("deadline").Optional(),
-		field.Time("completd_at").Optional(),
+		field.String("description").Optional().Nillable(),
+		field.Time("deadline").Optional().Nillable(),
+		field.Time("completd_at").Optional().Nillable(),
 		field.Time("created_at"),
-		field.Time("updated_at").Optional(),
+		field.Time("updated_at").Optional().Nillable(),
 	}
 }
 

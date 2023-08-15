@@ -680,7 +680,7 @@ func (m *TaskMutation) Description() (r string, exists bool) {
 // OldDescription returns the old "description" field's value of the Task entity.
 // If the Task object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TaskMutation) OldDescription(ctx context.Context) (v string, err error) {
+func (m *TaskMutation) OldDescription(ctx context.Context) (v *string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldDescription is only allowed on UpdateOne operations")
 	}
@@ -729,7 +729,7 @@ func (m *TaskMutation) Deadline() (r time.Time, exists bool) {
 // OldDeadline returns the old "deadline" field's value of the Task entity.
 // If the Task object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TaskMutation) OldDeadline(ctx context.Context) (v time.Time, err error) {
+func (m *TaskMutation) OldDeadline(ctx context.Context) (v *time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldDeadline is only allowed on UpdateOne operations")
 	}
@@ -778,7 +778,7 @@ func (m *TaskMutation) CompletdAt() (r time.Time, exists bool) {
 // OldCompletdAt returns the old "completd_at" field's value of the Task entity.
 // If the Task object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TaskMutation) OldCompletdAt(ctx context.Context) (v time.Time, err error) {
+func (m *TaskMutation) OldCompletdAt(ctx context.Context) (v *time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldCompletdAt is only allowed on UpdateOne operations")
 	}
@@ -863,7 +863,7 @@ func (m *TaskMutation) UpdatedAt() (r time.Time, exists bool) {
 // OldUpdatedAt returns the old "updated_at" field's value of the Task entity.
 // If the Task object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *TaskMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+func (m *TaskMutation) OldUpdatedAt(ctx context.Context) (v *time.Time, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
 	}
