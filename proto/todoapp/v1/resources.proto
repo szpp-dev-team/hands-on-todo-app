@@ -8,14 +8,9 @@ message Task {
   int32 id = 1;
   string name = 2;
   optional string description = 3;
-  repeated Tag tags = 4;
+  repeated string tags = 4;
   optional google.protobuf.Timestamp deadline = 5;
   optional google.protobuf.Timestamp completed_at = 6;
   google.protobuf.Timestamp created_at = 7;
   optional google.protobuf.Timestamp updated_at = 8;
-}
-
-message Tag {
-  int32 id = 1;
-  string name = 2;
 }
