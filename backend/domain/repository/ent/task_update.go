@@ -6,11 +6,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/szpp-dev-team/hands-on-todo-app/domain/repository/ent/predicate"
+	"github.com/szpp-dev-team/hands-on-todo-app/domain/repository/ent/tag"
 	"github.com/szpp-dev-team/hands-on-todo-app/domain/repository/ent/task"
 )
 
@@ -27,9 +29,137 @@ func (tu *TaskUpdate) Where(ps ...predicate.Task) *TaskUpdate {
 	return tu
 }
 
+// SetName sets the "name" field.
+func (tu *TaskUpdate) SetName(s string) *TaskUpdate {
+	tu.mutation.SetName(s)
+	return tu
+}
+
+// SetDescription sets the "description" field.
+func (tu *TaskUpdate) SetDescription(s string) *TaskUpdate {
+	tu.mutation.SetDescription(s)
+	return tu
+}
+
+// SetNillableDescription sets the "description" field if the given value is not nil.
+func (tu *TaskUpdate) SetNillableDescription(s *string) *TaskUpdate {
+	if s != nil {
+		tu.SetDescription(*s)
+	}
+	return tu
+}
+
+// ClearDescription clears the value of the "description" field.
+func (tu *TaskUpdate) ClearDescription() *TaskUpdate {
+	tu.mutation.ClearDescription()
+	return tu
+}
+
+// SetDeadline sets the "deadline" field.
+func (tu *TaskUpdate) SetDeadline(t time.Time) *TaskUpdate {
+	tu.mutation.SetDeadline(t)
+	return tu
+}
+
+// SetNillableDeadline sets the "deadline" field if the given value is not nil.
+func (tu *TaskUpdate) SetNillableDeadline(t *time.Time) *TaskUpdate {
+	if t != nil {
+		tu.SetDeadline(*t)
+	}
+	return tu
+}
+
+// ClearDeadline clears the value of the "deadline" field.
+func (tu *TaskUpdate) ClearDeadline() *TaskUpdate {
+	tu.mutation.ClearDeadline()
+	return tu
+}
+
+// SetCompletdAt sets the "completd_at" field.
+func (tu *TaskUpdate) SetCompletdAt(t time.Time) *TaskUpdate {
+	tu.mutation.SetCompletdAt(t)
+	return tu
+}
+
+// SetNillableCompletdAt sets the "completd_at" field if the given value is not nil.
+func (tu *TaskUpdate) SetNillableCompletdAt(t *time.Time) *TaskUpdate {
+	if t != nil {
+		tu.SetCompletdAt(*t)
+	}
+	return tu
+}
+
+// ClearCompletdAt clears the value of the "completd_at" field.
+func (tu *TaskUpdate) ClearCompletdAt() *TaskUpdate {
+	tu.mutation.ClearCompletdAt()
+	return tu
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (tu *TaskUpdate) SetCreatedAt(t time.Time) *TaskUpdate {
+	tu.mutation.SetCreatedAt(t)
+	return tu
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (tu *TaskUpdate) SetUpdatedAt(t time.Time) *TaskUpdate {
+	tu.mutation.SetUpdatedAt(t)
+	return tu
+}
+
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
+func (tu *TaskUpdate) SetNillableUpdatedAt(t *time.Time) *TaskUpdate {
+	if t != nil {
+		tu.SetUpdatedAt(*t)
+	}
+	return tu
+}
+
+// ClearUpdatedAt clears the value of the "updated_at" field.
+func (tu *TaskUpdate) ClearUpdatedAt() *TaskUpdate {
+	tu.mutation.ClearUpdatedAt()
+	return tu
+}
+
+// AddTagIDs adds the "tags" edge to the Tag entity by IDs.
+func (tu *TaskUpdate) AddTagIDs(ids ...int) *TaskUpdate {
+	tu.mutation.AddTagIDs(ids...)
+	return tu
+}
+
+// AddTags adds the "tags" edges to the Tag entity.
+func (tu *TaskUpdate) AddTags(t ...*Tag) *TaskUpdate {
+	ids := make([]int, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tu.AddTagIDs(ids...)
+}
+
 // Mutation returns the TaskMutation object of the builder.
 func (tu *TaskUpdate) Mutation() *TaskMutation {
 	return tu.mutation
+}
+
+// ClearTags clears all "tags" edges to the Tag entity.
+func (tu *TaskUpdate) ClearTags() *TaskUpdate {
+	tu.mutation.ClearTags()
+	return tu
+}
+
+// RemoveTagIDs removes the "tags" edge to Tag entities by IDs.
+func (tu *TaskUpdate) RemoveTagIDs(ids ...int) *TaskUpdate {
+	tu.mutation.RemoveTagIDs(ids...)
+	return tu
+}
+
+// RemoveTags removes "tags" edges to Tag entities.
+func (tu *TaskUpdate) RemoveTags(t ...*Tag) *TaskUpdate {
+	ids := make([]int, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tu.RemoveTagIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -68,6 +198,81 @@ func (tu *TaskUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
+	if value, ok := tu.mutation.Name(); ok {
+		_spec.SetField(task.FieldName, field.TypeString, value)
+	}
+	if value, ok := tu.mutation.Description(); ok {
+		_spec.SetField(task.FieldDescription, field.TypeString, value)
+	}
+	if tu.mutation.DescriptionCleared() {
+		_spec.ClearField(task.FieldDescription, field.TypeString)
+	}
+	if value, ok := tu.mutation.Deadline(); ok {
+		_spec.SetField(task.FieldDeadline, field.TypeTime, value)
+	}
+	if tu.mutation.DeadlineCleared() {
+		_spec.ClearField(task.FieldDeadline, field.TypeTime)
+	}
+	if value, ok := tu.mutation.CompletdAt(); ok {
+		_spec.SetField(task.FieldCompletdAt, field.TypeTime, value)
+	}
+	if tu.mutation.CompletdAtCleared() {
+		_spec.ClearField(task.FieldCompletdAt, field.TypeTime)
+	}
+	if value, ok := tu.mutation.CreatedAt(); ok {
+		_spec.SetField(task.FieldCreatedAt, field.TypeTime, value)
+	}
+	if value, ok := tu.mutation.UpdatedAt(); ok {
+		_spec.SetField(task.FieldUpdatedAt, field.TypeTime, value)
+	}
+	if tu.mutation.UpdatedAtCleared() {
+		_spec.ClearField(task.FieldUpdatedAt, field.TypeTime)
+	}
+	if tu.mutation.TagsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   task.TagsTable,
+			Columns: task.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tag.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.RemovedTagsIDs(); len(nodes) > 0 && !tu.mutation.TagsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   task.TagsTable,
+			Columns: task.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tag.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.TagsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   task.TagsTable,
+			Columns: task.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tag.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, tu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{task.Label}
@@ -88,9 +293,137 @@ type TaskUpdateOne struct {
 	mutation *TaskMutation
 }
 
+// SetName sets the "name" field.
+func (tuo *TaskUpdateOne) SetName(s string) *TaskUpdateOne {
+	tuo.mutation.SetName(s)
+	return tuo
+}
+
+// SetDescription sets the "description" field.
+func (tuo *TaskUpdateOne) SetDescription(s string) *TaskUpdateOne {
+	tuo.mutation.SetDescription(s)
+	return tuo
+}
+
+// SetNillableDescription sets the "description" field if the given value is not nil.
+func (tuo *TaskUpdateOne) SetNillableDescription(s *string) *TaskUpdateOne {
+	if s != nil {
+		tuo.SetDescription(*s)
+	}
+	return tuo
+}
+
+// ClearDescription clears the value of the "description" field.
+func (tuo *TaskUpdateOne) ClearDescription() *TaskUpdateOne {
+	tuo.mutation.ClearDescription()
+	return tuo
+}
+
+// SetDeadline sets the "deadline" field.
+func (tuo *TaskUpdateOne) SetDeadline(t time.Time) *TaskUpdateOne {
+	tuo.mutation.SetDeadline(t)
+	return tuo
+}
+
+// SetNillableDeadline sets the "deadline" field if the given value is not nil.
+func (tuo *TaskUpdateOne) SetNillableDeadline(t *time.Time) *TaskUpdateOne {
+	if t != nil {
+		tuo.SetDeadline(*t)
+	}
+	return tuo
+}
+
+// ClearDeadline clears the value of the "deadline" field.
+func (tuo *TaskUpdateOne) ClearDeadline() *TaskUpdateOne {
+	tuo.mutation.ClearDeadline()
+	return tuo
+}
+
+// SetCompletdAt sets the "completd_at" field.
+func (tuo *TaskUpdateOne) SetCompletdAt(t time.Time) *TaskUpdateOne {
+	tuo.mutation.SetCompletdAt(t)
+	return tuo
+}
+
+// SetNillableCompletdAt sets the "completd_at" field if the given value is not nil.
+func (tuo *TaskUpdateOne) SetNillableCompletdAt(t *time.Time) *TaskUpdateOne {
+	if t != nil {
+		tuo.SetCompletdAt(*t)
+	}
+	return tuo
+}
+
+// ClearCompletdAt clears the value of the "completd_at" field.
+func (tuo *TaskUpdateOne) ClearCompletdAt() *TaskUpdateOne {
+	tuo.mutation.ClearCompletdAt()
+	return tuo
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (tuo *TaskUpdateOne) SetCreatedAt(t time.Time) *TaskUpdateOne {
+	tuo.mutation.SetCreatedAt(t)
+	return tuo
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (tuo *TaskUpdateOne) SetUpdatedAt(t time.Time) *TaskUpdateOne {
+	tuo.mutation.SetUpdatedAt(t)
+	return tuo
+}
+
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
+func (tuo *TaskUpdateOne) SetNillableUpdatedAt(t *time.Time) *TaskUpdateOne {
+	if t != nil {
+		tuo.SetUpdatedAt(*t)
+	}
+	return tuo
+}
+
+// ClearUpdatedAt clears the value of the "updated_at" field.
+func (tuo *TaskUpdateOne) ClearUpdatedAt() *TaskUpdateOne {
+	tuo.mutation.ClearUpdatedAt()
+	return tuo
+}
+
+// AddTagIDs adds the "tags" edge to the Tag entity by IDs.
+func (tuo *TaskUpdateOne) AddTagIDs(ids ...int) *TaskUpdateOne {
+	tuo.mutation.AddTagIDs(ids...)
+	return tuo
+}
+
+// AddTags adds the "tags" edges to the Tag entity.
+func (tuo *TaskUpdateOne) AddTags(t ...*Tag) *TaskUpdateOne {
+	ids := make([]int, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tuo.AddTagIDs(ids...)
+}
+
 // Mutation returns the TaskMutation object of the builder.
 func (tuo *TaskUpdateOne) Mutation() *TaskMutation {
 	return tuo.mutation
+}
+
+// ClearTags clears all "tags" edges to the Tag entity.
+func (tuo *TaskUpdateOne) ClearTags() *TaskUpdateOne {
+	tuo.mutation.ClearTags()
+	return tuo
+}
+
+// RemoveTagIDs removes the "tags" edge to Tag entities by IDs.
+func (tuo *TaskUpdateOne) RemoveTagIDs(ids ...int) *TaskUpdateOne {
+	tuo.mutation.RemoveTagIDs(ids...)
+	return tuo
+}
+
+// RemoveTags removes "tags" edges to Tag entities.
+func (tuo *TaskUpdateOne) RemoveTags(t ...*Tag) *TaskUpdateOne {
+	ids := make([]int, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tuo.RemoveTagIDs(ids...)
 }
 
 // Where appends a list predicates to the TaskUpdate builder.
@@ -158,6 +491,81 @@ func (tuo *TaskUpdateOne) sqlSave(ctx context.Context) (_node *Task, err error) 
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := tuo.mutation.Name(); ok {
+		_spec.SetField(task.FieldName, field.TypeString, value)
+	}
+	if value, ok := tuo.mutation.Description(); ok {
+		_spec.SetField(task.FieldDescription, field.TypeString, value)
+	}
+	if tuo.mutation.DescriptionCleared() {
+		_spec.ClearField(task.FieldDescription, field.TypeString)
+	}
+	if value, ok := tuo.mutation.Deadline(); ok {
+		_spec.SetField(task.FieldDeadline, field.TypeTime, value)
+	}
+	if tuo.mutation.DeadlineCleared() {
+		_spec.ClearField(task.FieldDeadline, field.TypeTime)
+	}
+	if value, ok := tuo.mutation.CompletdAt(); ok {
+		_spec.SetField(task.FieldCompletdAt, field.TypeTime, value)
+	}
+	if tuo.mutation.CompletdAtCleared() {
+		_spec.ClearField(task.FieldCompletdAt, field.TypeTime)
+	}
+	if value, ok := tuo.mutation.CreatedAt(); ok {
+		_spec.SetField(task.FieldCreatedAt, field.TypeTime, value)
+	}
+	if value, ok := tuo.mutation.UpdatedAt(); ok {
+		_spec.SetField(task.FieldUpdatedAt, field.TypeTime, value)
+	}
+	if tuo.mutation.UpdatedAtCleared() {
+		_spec.ClearField(task.FieldUpdatedAt, field.TypeTime)
+	}
+	if tuo.mutation.TagsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   task.TagsTable,
+			Columns: task.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tag.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.RemovedTagsIDs(); len(nodes) > 0 && !tuo.mutation.TagsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   task.TagsTable,
+			Columns: task.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tag.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.TagsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   task.TagsTable,
+			Columns: task.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tag.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &Task{config: tuo.config}
 	_spec.Assign = _node.assignValues

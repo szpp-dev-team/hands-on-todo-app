@@ -14,75 +14,33 @@ import (
 	"github.com/szpp-dev-team/hands-on-todo-app/domain/repository/ent/task"
 )
 
-// TaskCreate is the builder for creating a Task entity.
-type TaskCreate struct {
+// TagCreate is the builder for creating a Tag entity.
+type TagCreate struct {
 	config
-	mutation *TaskMutation
+	mutation *TagMutation
 	hooks    []Hook
 }
 
 // SetName sets the "name" field.
-func (tc *TaskCreate) SetName(s string) *TaskCreate {
+func (tc *TagCreate) SetName(s string) *TagCreate {
 	tc.mutation.SetName(s)
 	return tc
 }
 
-// SetDescription sets the "description" field.
-func (tc *TaskCreate) SetDescription(s string) *TaskCreate {
-	tc.mutation.SetDescription(s)
-	return tc
-}
-
-// SetNillableDescription sets the "description" field if the given value is not nil.
-func (tc *TaskCreate) SetNillableDescription(s *string) *TaskCreate {
-	if s != nil {
-		tc.SetDescription(*s)
-	}
-	return tc
-}
-
-// SetDeadline sets the "deadline" field.
-func (tc *TaskCreate) SetDeadline(t time.Time) *TaskCreate {
-	tc.mutation.SetDeadline(t)
-	return tc
-}
-
-// SetNillableDeadline sets the "deadline" field if the given value is not nil.
-func (tc *TaskCreate) SetNillableDeadline(t *time.Time) *TaskCreate {
-	if t != nil {
-		tc.SetDeadline(*t)
-	}
-	return tc
-}
-
-// SetCompletdAt sets the "completd_at" field.
-func (tc *TaskCreate) SetCompletdAt(t time.Time) *TaskCreate {
-	tc.mutation.SetCompletdAt(t)
-	return tc
-}
-
-// SetNillableCompletdAt sets the "completd_at" field if the given value is not nil.
-func (tc *TaskCreate) SetNillableCompletdAt(t *time.Time) *TaskCreate {
-	if t != nil {
-		tc.SetCompletdAt(*t)
-	}
-	return tc
-}
-
 // SetCreatedAt sets the "created_at" field.
-func (tc *TaskCreate) SetCreatedAt(t time.Time) *TaskCreate {
+func (tc *TagCreate) SetCreatedAt(t time.Time) *TagCreate {
 	tc.mutation.SetCreatedAt(t)
 	return tc
 }
 
 // SetUpdatedAt sets the "updated_at" field.
-func (tc *TaskCreate) SetUpdatedAt(t time.Time) *TaskCreate {
+func (tc *TagCreate) SetUpdatedAt(t time.Time) *TagCreate {
 	tc.mutation.SetUpdatedAt(t)
 	return tc
 }
 
 // SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (tc *TaskCreate) SetNillableUpdatedAt(t *time.Time) *TaskCreate {
+func (tc *TagCreate) SetNillableUpdatedAt(t *time.Time) *TagCreate {
 	if t != nil {
 		tc.SetUpdatedAt(*t)
 	}
@@ -90,38 +48,38 @@ func (tc *TaskCreate) SetNillableUpdatedAt(t *time.Time) *TaskCreate {
 }
 
 // SetID sets the "id" field.
-func (tc *TaskCreate) SetID(i int) *TaskCreate {
+func (tc *TagCreate) SetID(i int) *TagCreate {
 	tc.mutation.SetID(i)
 	return tc
 }
 
-// AddTagIDs adds the "tags" edge to the Tag entity by IDs.
-func (tc *TaskCreate) AddTagIDs(ids ...int) *TaskCreate {
-	tc.mutation.AddTagIDs(ids...)
+// AddTaskIDs adds the "tasks" edge to the Task entity by IDs.
+func (tc *TagCreate) AddTaskIDs(ids ...int) *TagCreate {
+	tc.mutation.AddTaskIDs(ids...)
 	return tc
 }
 
-// AddTags adds the "tags" edges to the Tag entity.
-func (tc *TaskCreate) AddTags(t ...*Tag) *TaskCreate {
+// AddTasks adds the "tasks" edges to the Task entity.
+func (tc *TagCreate) AddTasks(t ...*Task) *TagCreate {
 	ids := make([]int, len(t))
 	for i := range t {
 		ids[i] = t[i].ID
 	}
-	return tc.AddTagIDs(ids...)
+	return tc.AddTaskIDs(ids...)
 }
 
-// Mutation returns the TaskMutation object of the builder.
-func (tc *TaskCreate) Mutation() *TaskMutation {
+// Mutation returns the TagMutation object of the builder.
+func (tc *TagCreate) Mutation() *TagMutation {
 	return tc.mutation
 }
 
-// Save creates the Task in the database.
-func (tc *TaskCreate) Save(ctx context.Context) (*Task, error) {
+// Save creates the Tag in the database.
+func (tc *TagCreate) Save(ctx context.Context) (*Tag, error) {
 	return withHooks(ctx, tc.sqlSave, tc.mutation, tc.hooks)
 }
 
 // SaveX calls Save and panics if Save returns an error.
-func (tc *TaskCreate) SaveX(ctx context.Context) *Task {
+func (tc *TagCreate) SaveX(ctx context.Context) *Tag {
 	v, err := tc.Save(ctx)
 	if err != nil {
 		panic(err)
@@ -130,30 +88,30 @@ func (tc *TaskCreate) SaveX(ctx context.Context) *Task {
 }
 
 // Exec executes the query.
-func (tc *TaskCreate) Exec(ctx context.Context) error {
+func (tc *TagCreate) Exec(ctx context.Context) error {
 	_, err := tc.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (tc *TaskCreate) ExecX(ctx context.Context) {
+func (tc *TagCreate) ExecX(ctx context.Context) {
 	if err := tc.Exec(ctx); err != nil {
 		panic(err)
 	}
 }
 
 // check runs all checks and user-defined validators on the builder.
-func (tc *TaskCreate) check() error {
+func (tc *TagCreate) check() error {
 	if _, ok := tc.mutation.Name(); !ok {
-		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Task.name"`)}
+		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Tag.name"`)}
 	}
 	if _, ok := tc.mutation.CreatedAt(); !ok {
-		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "Task.created_at"`)}
+		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "Tag.created_at"`)}
 	}
 	return nil
 }
 
-func (tc *TaskCreate) sqlSave(ctx context.Context) (*Task, error) {
+func (tc *TagCreate) sqlSave(ctx context.Context) (*Tag, error) {
 	if err := tc.check(); err != nil {
 		return nil, err
 	}
@@ -173,48 +131,36 @@ func (tc *TaskCreate) sqlSave(ctx context.Context) (*Task, error) {
 	return _node, nil
 }
 
-func (tc *TaskCreate) createSpec() (*Task, *sqlgraph.CreateSpec) {
+func (tc *TagCreate) createSpec() (*Tag, *sqlgraph.CreateSpec) {
 	var (
-		_node = &Task{config: tc.config}
-		_spec = sqlgraph.NewCreateSpec(task.Table, sqlgraph.NewFieldSpec(task.FieldID, field.TypeInt))
+		_node = &Tag{config: tc.config}
+		_spec = sqlgraph.NewCreateSpec(tag.Table, sqlgraph.NewFieldSpec(tag.FieldID, field.TypeInt))
 	)
 	if id, ok := tc.mutation.ID(); ok {
 		_node.ID = id
 		_spec.ID.Value = id
 	}
 	if value, ok := tc.mutation.Name(); ok {
-		_spec.SetField(task.FieldName, field.TypeString, value)
+		_spec.SetField(tag.FieldName, field.TypeString, value)
 		_node.Name = value
 	}
-	if value, ok := tc.mutation.Description(); ok {
-		_spec.SetField(task.FieldDescription, field.TypeString, value)
-		_node.Description = value
-	}
-	if value, ok := tc.mutation.Deadline(); ok {
-		_spec.SetField(task.FieldDeadline, field.TypeTime, value)
-		_node.Deadline = value
-	}
-	if value, ok := tc.mutation.CompletdAt(); ok {
-		_spec.SetField(task.FieldCompletdAt, field.TypeTime, value)
-		_node.CompletdAt = value
-	}
 	if value, ok := tc.mutation.CreatedAt(); ok {
-		_spec.SetField(task.FieldCreatedAt, field.TypeTime, value)
+		_spec.SetField(tag.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
 	}
 	if value, ok := tc.mutation.UpdatedAt(); ok {
-		_spec.SetField(task.FieldUpdatedAt, field.TypeTime, value)
+		_spec.SetField(tag.FieldUpdatedAt, field.TypeTime, value)
 		_node.UpdatedAt = value
 	}
-	if nodes := tc.mutation.TagsIDs(); len(nodes) > 0 {
+	if nodes := tc.mutation.TasksIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
-			Inverse: false,
-			Table:   task.TagsTable,
-			Columns: task.TagsPrimaryKey,
+			Inverse: true,
+			Table:   tag.TasksTable,
+			Columns: tag.TasksPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(tag.FieldID, field.TypeInt),
+				IDSpec: sqlgraph.NewFieldSpec(task.FieldID, field.TypeInt),
 			},
 		}
 		for _, k := range nodes {
@@ -225,22 +171,22 @@ func (tc *TaskCreate) createSpec() (*Task, *sqlgraph.CreateSpec) {
 	return _node, _spec
 }
 
-// TaskCreateBulk is the builder for creating many Task entities in bulk.
-type TaskCreateBulk struct {
+// TagCreateBulk is the builder for creating many Tag entities in bulk.
+type TagCreateBulk struct {
 	config
-	builders []*TaskCreate
+	builders []*TagCreate
 }
 
-// Save creates the Task entities in the database.
-func (tcb *TaskCreateBulk) Save(ctx context.Context) ([]*Task, error) {
+// Save creates the Tag entities in the database.
+func (tcb *TagCreateBulk) Save(ctx context.Context) ([]*Tag, error) {
 	specs := make([]*sqlgraph.CreateSpec, len(tcb.builders))
-	nodes := make([]*Task, len(tcb.builders))
+	nodes := make([]*Tag, len(tcb.builders))
 	mutators := make([]Mutator, len(tcb.builders))
 	for i := range tcb.builders {
 		func(i int, root context.Context) {
 			builder := tcb.builders[i]
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
-				mutation, ok := m.(*TaskMutation)
+				mutation, ok := m.(*TagMutation)
 				if !ok {
 					return nil, fmt.Errorf("unexpected mutation type %T", m)
 				}
@@ -287,7 +233,7 @@ func (tcb *TaskCreateBulk) Save(ctx context.Context) ([]*Task, error) {
 }
 
 // SaveX is like Save, but panics if an error occurs.
-func (tcb *TaskCreateBulk) SaveX(ctx context.Context) []*Task {
+func (tcb *TagCreateBulk) SaveX(ctx context.Context) []*Tag {
 	v, err := tcb.Save(ctx)
 	if err != nil {
 		panic(err)
@@ -296,13 +242,13 @@ func (tcb *TaskCreateBulk) SaveX(ctx context.Context) []*Task {
 }
 
 // Exec executes the query.
-func (tcb *TaskCreateBulk) Exec(ctx context.Context) error {
+func (tcb *TagCreateBulk) Exec(ctx context.Context) error {
 	_, err := tcb.Save(ctx)
 	return err
 }
 
 // ExecX is like Exec, but panics if an error occurs.
-func (tcb *TaskCreateBulk) ExecX(ctx context.Context) {
+func (tcb *TagCreateBulk) ExecX(ctx context.Context) {
 	if err := tcb.Exec(ctx); err != nil {
 		panic(err)
 	}

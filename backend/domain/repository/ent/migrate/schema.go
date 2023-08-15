@@ -8,9 +8,28 @@ import (
 )
 
 var (
+	// TagsColumns holds the columns for the "tags" table.
+	TagsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime, Nullable: true},
+	}
+	// TagsTable holds the schema information for the "tags" table.
+	TagsTable = &schema.Table{
+		Name:       "tags",
+		Columns:    TagsColumns,
+		PrimaryKey: []*schema.Column{TagsColumns[0]},
+	}
 	// TasksColumns holds the columns for the "tasks" table.
 	TasksColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "name", Type: field.TypeString},
+		{Name: "description", Type: field.TypeString, Nullable: true},
+		{Name: "deadline", Type: field.TypeTime, Nullable: true},
+		{Name: "completd_at", Type: field.TypeTime, Nullable: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime, Nullable: true},
 	}
 	// TasksTable holds the schema information for the "tasks" table.
 	TasksTable = &schema.Table{
@@ -18,11 +37,40 @@ var (
 		Columns:    TasksColumns,
 		PrimaryKey: []*schema.Column{TasksColumns[0]},
 	}
+	// TaskTagsColumns holds the columns for the "task_tags" table.
+	TaskTagsColumns = []*schema.Column{
+		{Name: "task_id", Type: field.TypeInt},
+		{Name: "tag_id", Type: field.TypeInt},
+	}
+	// TaskTagsTable holds the schema information for the "task_tags" table.
+	TaskTagsTable = &schema.Table{
+		Name:       "task_tags",
+		Columns:    TaskTagsColumns,
+		PrimaryKey: []*schema.Column{TaskTagsColumns[0], TaskTagsColumns[1]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "task_tags_task_id",
+				Columns:    []*schema.Column{TaskTagsColumns[0]},
+				RefColumns: []*schema.Column{TasksColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+			{
+				Symbol:     "task_tags_tag_id",
+				Columns:    []*schema.Column{TaskTagsColumns[1]},
+				RefColumns: []*schema.Column{TagsColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
+		TagsTable,
 		TasksTable,
+		TaskTagsTable,
 	}
 )
 
 func init() {
+	TaskTagsTable.ForeignKeys[0].RefTable = TasksTable
+	TaskTagsTable.ForeignKeys[1].RefTable = TagsTable
 }
