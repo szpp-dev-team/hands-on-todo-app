@@ -3,6 +3,7 @@ syntax = "proto3";
 package todoapp.v1;
 
 import "todoapp/v1/resources.proto";
+import "google/protobuf/timestamp.proto";
 
 message UnaryRequest { string msg = 1; }
 message UnaryResponse { string msg = 1; }
@@ -12,3 +13,20 @@ message ClientStreamingRequest { string msg = 1; }
 message ClientStreamingResponse { string msg = 1; }
 message BidirectionalStreamingRequest { string msg = 1; }
 message BidirectionalStreamingResponse { string msg = 1; }
+
+message GetTaskRequest { int32 id = 1; }
+message GetTaskResponse { Task task = 1; }
+message GetTaskListRequest {
+  // empty
+}
+message GetTaskListResponse { repeated Task tasks = 1; }
+message CreateTaskRequest {
+  string name = 1;
+  optional string description = 2;
+  repeated string tags = 3;
+  optional google.protobuf.Timestamp deadline = 4;
+  optional google.protobuf.Timestamp completed_at = 5;
+}
+message CreateTaskResponse { Task task = 1; }
+message SearchByTagRequest { string tag = 1; }
+message SearchByTagResponse { repeated Task tasks = 1; }
