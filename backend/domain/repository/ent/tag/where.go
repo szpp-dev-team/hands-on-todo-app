@@ -65,11 +65,6 @@ func CreatedAt(v time.Time) predicate.Tag {
 	return predicate.Tag(sql.FieldEQ(FieldCreatedAt, v))
 }
 
-// UpdatedAt applies equality check predicate on the "updated_at" field. It's identical to UpdatedAtEQ.
-func UpdatedAt(v time.Time) predicate.Tag {
-	return predicate.Tag(sql.FieldEQ(FieldUpdatedAt, v))
-}
-
 // NameEQ applies the EQ predicate on the "name" field.
 func NameEQ(v string) predicate.Tag {
 	return predicate.Tag(sql.FieldEQ(FieldName, v))
@@ -173,56 +168,6 @@ func CreatedAtLT(v time.Time) predicate.Tag {
 // CreatedAtLTE applies the LTE predicate on the "created_at" field.
 func CreatedAtLTE(v time.Time) predicate.Tag {
 	return predicate.Tag(sql.FieldLTE(FieldCreatedAt, v))
-}
-
-// UpdatedAtEQ applies the EQ predicate on the "updated_at" field.
-func UpdatedAtEQ(v time.Time) predicate.Tag {
-	return predicate.Tag(sql.FieldEQ(FieldUpdatedAt, v))
-}
-
-// UpdatedAtNEQ applies the NEQ predicate on the "updated_at" field.
-func UpdatedAtNEQ(v time.Time) predicate.Tag {
-	return predicate.Tag(sql.FieldNEQ(FieldUpdatedAt, v))
-}
-
-// UpdatedAtIn applies the In predicate on the "updated_at" field.
-func UpdatedAtIn(vs ...time.Time) predicate.Tag {
-	return predicate.Tag(sql.FieldIn(FieldUpdatedAt, vs...))
-}
-
-// UpdatedAtNotIn applies the NotIn predicate on the "updated_at" field.
-func UpdatedAtNotIn(vs ...time.Time) predicate.Tag {
-	return predicate.Tag(sql.FieldNotIn(FieldUpdatedAt, vs...))
-}
-
-// UpdatedAtGT applies the GT predicate on the "updated_at" field.
-func UpdatedAtGT(v time.Time) predicate.Tag {
-	return predicate.Tag(sql.FieldGT(FieldUpdatedAt, v))
-}
-
-// UpdatedAtGTE applies the GTE predicate on the "updated_at" field.
-func UpdatedAtGTE(v time.Time) predicate.Tag {
-	return predicate.Tag(sql.FieldGTE(FieldUpdatedAt, v))
-}
-
-// UpdatedAtLT applies the LT predicate on the "updated_at" field.
-func UpdatedAtLT(v time.Time) predicate.Tag {
-	return predicate.Tag(sql.FieldLT(FieldUpdatedAt, v))
-}
-
-// UpdatedAtLTE applies the LTE predicate on the "updated_at" field.
-func UpdatedAtLTE(v time.Time) predicate.Tag {
-	return predicate.Tag(sql.FieldLTE(FieldUpdatedAt, v))
-}
-
-// UpdatedAtIsNil applies the IsNil predicate on the "updated_at" field.
-func UpdatedAtIsNil() predicate.Tag {
-	return predicate.Tag(sql.FieldIsNull(FieldUpdatedAt))
-}
-
-// UpdatedAtNotNil applies the NotNil predicate on the "updated_at" field.
-func UpdatedAtNotNil() predicate.Tag {
-	return predicate.Tag(sql.FieldNotNull(FieldUpdatedAt))
 }
 
 // HasTasks applies the HasEdge predicate on the "tasks" edge.

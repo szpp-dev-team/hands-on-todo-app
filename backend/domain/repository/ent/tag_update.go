@@ -41,26 +41,6 @@ func (tu *TagUpdate) SetCreatedAt(t time.Time) *TagUpdate {
 	return tu
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (tu *TagUpdate) SetUpdatedAt(t time.Time) *TagUpdate {
-	tu.mutation.SetUpdatedAt(t)
-	return tu
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (tu *TagUpdate) SetNillableUpdatedAt(t *time.Time) *TagUpdate {
-	if t != nil {
-		tu.SetUpdatedAt(*t)
-	}
-	return tu
-}
-
-// ClearUpdatedAt clears the value of the "updated_at" field.
-func (tu *TagUpdate) ClearUpdatedAt() *TagUpdate {
-	tu.mutation.ClearUpdatedAt()
-	return tu
-}
-
 // AddTaskIDs adds the "tasks" edge to the Task entity by IDs.
 func (tu *TagUpdate) AddTaskIDs(ids ...int) *TagUpdate {
 	tu.mutation.AddTaskIDs(ids...)
@@ -144,12 +124,6 @@ func (tu *TagUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if value, ok := tu.mutation.CreatedAt(); ok {
 		_spec.SetField(tag.FieldCreatedAt, field.TypeTime, value)
 	}
-	if value, ok := tu.mutation.UpdatedAt(); ok {
-		_spec.SetField(tag.FieldUpdatedAt, field.TypeTime, value)
-	}
-	if tu.mutation.UpdatedAtCleared() {
-		_spec.ClearField(tag.FieldUpdatedAt, field.TypeTime)
-	}
 	if tu.mutation.TasksCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
@@ -224,26 +198,6 @@ func (tuo *TagUpdateOne) SetName(s string) *TagUpdateOne {
 // SetCreatedAt sets the "created_at" field.
 func (tuo *TagUpdateOne) SetCreatedAt(t time.Time) *TagUpdateOne {
 	tuo.mutation.SetCreatedAt(t)
-	return tuo
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (tuo *TagUpdateOne) SetUpdatedAt(t time.Time) *TagUpdateOne {
-	tuo.mutation.SetUpdatedAt(t)
-	return tuo
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (tuo *TagUpdateOne) SetNillableUpdatedAt(t *time.Time) *TagUpdateOne {
-	if t != nil {
-		tuo.SetUpdatedAt(*t)
-	}
-	return tuo
-}
-
-// ClearUpdatedAt clears the value of the "updated_at" field.
-func (tuo *TagUpdateOne) ClearUpdatedAt() *TagUpdateOne {
-	tuo.mutation.ClearUpdatedAt()
 	return tuo
 }
 
@@ -359,12 +313,6 @@ func (tuo *TagUpdateOne) sqlSave(ctx context.Context) (_node *Tag, err error) {
 	}
 	if value, ok := tuo.mutation.CreatedAt(); ok {
 		_spec.SetField(tag.FieldCreatedAt, field.TypeTime, value)
-	}
-	if value, ok := tuo.mutation.UpdatedAt(); ok {
-		_spec.SetField(tag.FieldUpdatedAt, field.TypeTime, value)
-	}
-	if tuo.mutation.UpdatedAtCleared() {
-		_spec.ClearField(tag.FieldUpdatedAt, field.TypeTime)
 	}
 	if tuo.mutation.TasksCleared() {
 		edge := &sqlgraph.EdgeSpec{

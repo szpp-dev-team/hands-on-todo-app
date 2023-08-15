@@ -16,8 +16,6 @@ const (
 	FieldName = "name"
 	// FieldCreatedAt holds the string denoting the created_at field in the database.
 	FieldCreatedAt = "created_at"
-	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
-	FieldUpdatedAt = "updated_at"
 	// EdgeTasks holds the string denoting the tasks edge name in mutations.
 	EdgeTasks = "tasks"
 	// Table holds the table name of the tag in the database.
@@ -34,7 +32,6 @@ var Columns = []string{
 	FieldID,
 	FieldName,
 	FieldCreatedAt,
-	FieldUpdatedAt,
 }
 
 var (
@@ -69,11 +66,6 @@ func ByName(opts ...sql.OrderTermOption) OrderOption {
 // ByCreatedAt orders the results by the created_at field.
 func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
-}
-
-// ByUpdatedAt orders the results by the updated_at field.
-func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
 }
 
 // ByTasksCount orders the results by tasks count.

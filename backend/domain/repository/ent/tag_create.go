@@ -33,26 +33,6 @@ func (tc *TagCreate) SetCreatedAt(t time.Time) *TagCreate {
 	return tc
 }
 
-// SetUpdatedAt sets the "updated_at" field.
-func (tc *TagCreate) SetUpdatedAt(t time.Time) *TagCreate {
-	tc.mutation.SetUpdatedAt(t)
-	return tc
-}
-
-// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
-func (tc *TagCreate) SetNillableUpdatedAt(t *time.Time) *TagCreate {
-	if t != nil {
-		tc.SetUpdatedAt(*t)
-	}
-	return tc
-}
-
-// SetID sets the "id" field.
-func (tc *TagCreate) SetID(i int) *TagCreate {
-	tc.mutation.SetID(i)
-	return tc
-}
-
 // AddTaskIDs adds the "tasks" edge to the Task entity by IDs.
 func (tc *TagCreate) AddTaskIDs(ids ...int) *TagCreate {
 	tc.mutation.AddTaskIDs(ids...)
@@ -122,10 +102,8 @@ func (tc *TagCreate) sqlSave(ctx context.Context) (*Tag, error) {
 		}
 		return nil, err
 	}
-	if _spec.ID.Value != _node.ID {
-		id := _spec.ID.Value.(int64)
-		_node.ID = int(id)
-	}
+	id := _spec.ID.Value.(int64)
+	_node.ID = int(id)
 	tc.mutation.id = &_node.ID
 	tc.mutation.done = true
 	return _node, nil
@@ -136,10 +114,6 @@ func (tc *TagCreate) createSpec() (*Tag, *sqlgraph.CreateSpec) {
 		_node = &Tag{config: tc.config}
 		_spec = sqlgraph.NewCreateSpec(tag.Table, sqlgraph.NewFieldSpec(tag.FieldID, field.TypeInt))
 	)
-	if id, ok := tc.mutation.ID(); ok {
-		_node.ID = id
-		_spec.ID.Value = id
-	}
 	if value, ok := tc.mutation.Name(); ok {
 		_spec.SetField(tag.FieldName, field.TypeString, value)
 		_node.Name = value
@@ -147,10 +121,6 @@ func (tc *TagCreate) createSpec() (*Tag, *sqlgraph.CreateSpec) {
 	if value, ok := tc.mutation.CreatedAt(); ok {
 		_spec.SetField(tag.FieldCreatedAt, field.TypeTime, value)
 		_node.CreatedAt = value
-	}
-	if value, ok := tc.mutation.UpdatedAt(); ok {
-		_spec.SetField(tag.FieldUpdatedAt, field.TypeTime, value)
-		_node.UpdatedAt = value
 	}
 	if nodes := tc.mutation.TasksIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -211,7 +181,7 @@ func (tcb *TagCreateBulk) Save(ctx context.Context) ([]*Tag, error) {
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
+				if specs[i].ID.Value != nil {
 					id := specs[i].ID.Value.(int64)
 					nodes[i].ID = int(id)
 				}

@@ -14,16 +14,14 @@ type Tag struct {
 // Fields of the Tag.
 func (Tag) Fields() []ent.Field {
 	return []ent.Field{
-		field.Int("id"),
-		field.String("name"),
+		field.String("name").Unique(),
 		field.Time("created_at"),
-		field.Time("updated_at").Optional(),
 	}
 }
 
 // Edges of the Tag.
 func (Tag) Edges() []ent.Edge {
-	return []ent.Edge {
-        edge.From("tasks", Task.Type).Ref("tags"),
-    }
+	return []ent.Edge{
+		edge.From("tasks", Task.Type).Ref("tags"),
+	}
 }
