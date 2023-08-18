@@ -12,3 +12,7 @@ message ClientStreamingRequest { string msg = 1; }
 message ClientStreamingResponse { string msg = 1; }
 message BidirectionalStreamingRequest { string msg = 1; }
 message BidirectionalStreamingResponse { string msg = 1; }
+
+message GetTaskRequest { int32 id = 1; }
+
+message GetTaskResponse { Task task = 1; }

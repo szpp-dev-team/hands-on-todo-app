@@ -13,3 +13,7 @@ service HealthcheckService {
   rpc BidirectionalStreaming(stream BidirectionalStreamingRequest)
       returns (stream BidirectionalStreamingResponse);
 }
+
+service TodoappService {
+  rpc GetTask(GetTaskRequest) returns (GetTaskResponse);
+}

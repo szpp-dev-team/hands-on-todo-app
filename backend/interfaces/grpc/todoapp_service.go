@@ -19,22 +19,22 @@ func NewTodoappServiceServer(entClient *ent.Client, logger *slog.Logger) todoapp
 	}
 }
 
-// CreateTask implements todoappv1.TodoappServiceServer.
-func (*todoappServiceServer) CreateTask(context.Context, *todoappv1.CreateTaskRequest) (*todoappv1.CreateTaskResponse, error) {
-	panic("unimplemented")
-}
+// // CreateTask implements todoappv1.TodoappServiceServer.
+// func (*todoappServiceServer) CreateTask(context.Context, *todoappv1.CreateTaskRequest) (*todoappv1.CreateTaskResponse, error) {
+// 	panic("unimplemented")
+// }
 
 // GetTask implements todoappv1.TodoappServiceServer.
 func (*todoappServiceServer) GetTask(context.Context, *todoappv1.GetTaskRequest) (*todoappv1.GetTaskResponse, error) {
 	panic("unimplemented")
 }
 
-// GetTaskList implements todoappv1.TodoappServiceServer.
-func (*todoappServiceServer) GetTaskList(context.Context, *todoappv1.GetTaskListRequest) (*todoappv1.GetTaskListResponse, error) {
-	panic("unimplemented")
-}
+// // GetTaskList implements todoappv1.TodoappServiceServer.
+// func (*todoappServiceServer) GetTaskList(context.Context, *todoappv1.GetTaskListRequest) (*todoappv1.GetTaskListResponse, error) {
+// 	panic("unimplemented")
+// }
 
-// SearchByTag implements todoappv1.TodoappServiceServer.
-func (*todoappServiceServer) SearchByTag(context.Context, *todoappv1.SearchByTagRequest) (*todoappv1.SearchByTagResponse, error) {
-	panic("unimplemented")
-}
+// // SearchByTag implements todoappv1.TodoappServiceServer.
+// func (*todoappServiceServer) SearchByTag(context.Context, *todoappv1.SearchByTagRequest) (*todoappv1.SearchByTagResponse, error) {
+// 	panic("unimplemented")
+// }
