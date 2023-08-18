@@ -28,7 +28,7 @@ func New(opts ...optionFunc) *grpc.Server {
 	reflection.Register(srv) // for grpcui
 	healthcheckSrv := grpc_interfaces.NewHealthcheckServiceServer()
 	pb.RegisterHealthcheckServiceServer(srv, healthcheckSrv)
-	todoappSrv := grpc_interfaces.NewTodoappServiceServer(opt.entClient)
+	todoappSrv := grpc_interfaces.NewTodoappServiceServer(opt.entClient, opt.logger)
 	pb.RegisterTodoappServiceServer(srv, todoappSrv)
 
 	return srv
