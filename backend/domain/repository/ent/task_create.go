@@ -4,7 +4,9 @@ package ent
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -16,6 +18,80 @@ type TaskCreate struct {
 	config
 	mutation *TaskMutation
 	hooks    []Hook
+}
+
+// SetName sets the "name" field.
+func (tc *TaskCreate) SetName(s string) *TaskCreate {
+	tc.mutation.SetName(s)
+	return tc
+}
+
+// SetDescription sets the "description" field.
+func (tc *TaskCreate) SetDescription(s string) *TaskCreate {
+	tc.mutation.SetDescription(s)
+	return tc
+}
+
+// SetNillableDescription sets the "description" field if the given value is not nil.
+func (tc *TaskCreate) SetNillableDescription(s *string) *TaskCreate {
+	if s != nil {
+		tc.SetDescription(*s)
+	}
+	return tc
+}
+
+// SetDeadline sets the "deadline" field.
+func (tc *TaskCreate) SetDeadline(t time.Time) *TaskCreate {
+	tc.mutation.SetDeadline(t)
+	return tc
+}
+
+// SetNillableDeadline sets the "deadline" field if the given value is not nil.
+func (tc *TaskCreate) SetNillableDeadline(t *time.Time) *TaskCreate {
+	if t != nil {
+		tc.SetDeadline(*t)
+	}
+	return tc
+}
+
+// SetCompletedAt sets the "completed_at" field.
+func (tc *TaskCreate) SetCompletedAt(t time.Time) *TaskCreate {
+	tc.mutation.SetCompletedAt(t)
+	return tc
+}
+
+// SetNillableCompletedAt sets the "completed_at" field if the given value is not nil.
+func (tc *TaskCreate) SetNillableCompletedAt(t *time.Time) *TaskCreate {
+	if t != nil {
+		tc.SetCompletedAt(*t)
+	}
+	return tc
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (tc *TaskCreate) SetCreatedAt(t time.Time) *TaskCreate {
+	tc.mutation.SetCreatedAt(t)
+	return tc
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (tc *TaskCreate) SetUpdatedAt(t time.Time) *TaskCreate {
+	tc.mutation.SetUpdatedAt(t)
+	return tc
+}
+
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
+func (tc *TaskCreate) SetNillableUpdatedAt(t *time.Time) *TaskCreate {
+	if t != nil {
+		tc.SetUpdatedAt(*t)
+	}
+	return tc
+}
+
+// SetID sets the "id" field.
+func (tc *TaskCreate) SetID(i int) *TaskCreate {
+	tc.mutation.SetID(i)
+	return tc
 }
 
 // Mutation returns the TaskMutation object of the builder.
@@ -52,6 +128,12 @@ func (tc *TaskCreate) ExecX(ctx context.Context) {
 
 // check runs all checks and user-defined validators on the builder.
 func (tc *TaskCreate) check() error {
+	if _, ok := tc.mutation.Name(); !ok {
+		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Task.name"`)}
+	}
+	if _, ok := tc.mutation.CreatedAt(); !ok {
+		return &ValidationError{Name: "created_at", err: errors.New(`ent: missing required field "Task.created_at"`)}
+	}
 	return nil
 }
 
@@ -66,8 +148,10 @@ func (tc *TaskCreate) sqlSave(ctx context.Context) (*Task, error) {
 		}
 		return nil, err
 	}
-	id := _spec.ID.Value.(int64)
-	_node.ID = int(id)
+	if _spec.ID.Value != _node.ID {
+		id := _spec.ID.Value.(int64)
+		_node.ID = int(id)
+	}
 	tc.mutation.id = &_node.ID
 	tc.mutation.done = true
 	return _node, nil
@@ -78,6 +162,34 @@ func (tc *TaskCreate) createSpec() (*Task, *sqlgraph.CreateSpec) {
 		_node = &Task{config: tc.config}
 		_spec = sqlgraph.NewCreateSpec(task.Table, sqlgraph.NewFieldSpec(task.FieldID, field.TypeInt))
 	)
+	if id, ok := tc.mutation.ID(); ok {
+		_node.ID = id
+		_spec.ID.Value = id
+	}
+	if value, ok := tc.mutation.Name(); ok {
+		_spec.SetField(task.FieldName, field.TypeString, value)
+		_node.Name = value
+	}
+	if value, ok := tc.mutation.Description(); ok {
+		_spec.SetField(task.FieldDescription, field.TypeString, value)
+		_node.Description = &value
+	}
+	if value, ok := tc.mutation.Deadline(); ok {
+		_spec.SetField(task.FieldDeadline, field.TypeTime, value)
+		_node.Deadline = &value
+	}
+	if value, ok := tc.mutation.CompletedAt(); ok {
+		_spec.SetField(task.FieldCompletedAt, field.TypeTime, value)
+		_node.CompletedAt = &value
+	}
+	if value, ok := tc.mutation.CreatedAt(); ok {
+		_spec.SetField(task.FieldCreatedAt, field.TypeTime, value)
+		_node.CreatedAt = value
+	}
+	if value, ok := tc.mutation.UpdatedAt(); ok {
+		_spec.SetField(task.FieldUpdatedAt, field.TypeTime, value)
+		_node.UpdatedAt = &value
+	}
 	return _node, _spec
 }
 
@@ -121,7 +233,7 @@ func (tcb *TaskCreateBulk) Save(ctx context.Context) ([]*Task, error) {
 					return nil, err
 				}
 				mutation.id = &nodes[i].ID
-				if specs[i].ID.Value != nil {
+				if specs[i].ID.Value != nil && nodes[i].ID == 0 {
 					id := specs[i].ID.Value.(int64)
 					nodes[i].ID = int(id)
 				}

@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -24,6 +25,98 @@ type TaskUpdate struct {
 // Where appends a list predicates to the TaskUpdate builder.
 func (tu *TaskUpdate) Where(ps ...predicate.Task) *TaskUpdate {
 	tu.mutation.Where(ps...)
+	return tu
+}
+
+// SetName sets the "name" field.
+func (tu *TaskUpdate) SetName(s string) *TaskUpdate {
+	tu.mutation.SetName(s)
+	return tu
+}
+
+// SetDescription sets the "description" field.
+func (tu *TaskUpdate) SetDescription(s string) *TaskUpdate {
+	tu.mutation.SetDescription(s)
+	return tu
+}
+
+// SetNillableDescription sets the "description" field if the given value is not nil.
+func (tu *TaskUpdate) SetNillableDescription(s *string) *TaskUpdate {
+	if s != nil {
+		tu.SetDescription(*s)
+	}
+	return tu
+}
+
+// ClearDescription clears the value of the "description" field.
+func (tu *TaskUpdate) ClearDescription() *TaskUpdate {
+	tu.mutation.ClearDescription()
+	return tu
+}
+
+// SetDeadline sets the "deadline" field.
+func (tu *TaskUpdate) SetDeadline(t time.Time) *TaskUpdate {
+	tu.mutation.SetDeadline(t)
+	return tu
+}
+
+// SetNillableDeadline sets the "deadline" field if the given value is not nil.
+func (tu *TaskUpdate) SetNillableDeadline(t *time.Time) *TaskUpdate {
+	if t != nil {
+		tu.SetDeadline(*t)
+	}
+	return tu
+}
+
+// ClearDeadline clears the value of the "deadline" field.
+func (tu *TaskUpdate) ClearDeadline() *TaskUpdate {
+	tu.mutation.ClearDeadline()
+	return tu
+}
+
+// SetCompletedAt sets the "completed_at" field.
+func (tu *TaskUpdate) SetCompletedAt(t time.Time) *TaskUpdate {
+	tu.mutation.SetCompletedAt(t)
+	return tu
+}
+
+// SetNillableCompletedAt sets the "completed_at" field if the given value is not nil.
+func (tu *TaskUpdate) SetNillableCompletedAt(t *time.Time) *TaskUpdate {
+	if t != nil {
+		tu.SetCompletedAt(*t)
+	}
+	return tu
+}
+
+// ClearCompletedAt clears the value of the "completed_at" field.
+func (tu *TaskUpdate) ClearCompletedAt() *TaskUpdate {
+	tu.mutation.ClearCompletedAt()
+	return tu
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (tu *TaskUpdate) SetCreatedAt(t time.Time) *TaskUpdate {
+	tu.mutation.SetCreatedAt(t)
+	return tu
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (tu *TaskUpdate) SetUpdatedAt(t time.Time) *TaskUpdate {
+	tu.mutation.SetUpdatedAt(t)
+	return tu
+}
+
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
+func (tu *TaskUpdate) SetNillableUpdatedAt(t *time.Time) *TaskUpdate {
+	if t != nil {
+		tu.SetUpdatedAt(*t)
+	}
+	return tu
+}
+
+// ClearUpdatedAt clears the value of the "updated_at" field.
+func (tu *TaskUpdate) ClearUpdatedAt() *TaskUpdate {
+	tu.mutation.ClearUpdatedAt()
 	return tu
 }
 
@@ -68,6 +161,36 @@ func (tu *TaskUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
+	if value, ok := tu.mutation.Name(); ok {
+		_spec.SetField(task.FieldName, field.TypeString, value)
+	}
+	if value, ok := tu.mutation.Description(); ok {
+		_spec.SetField(task.FieldDescription, field.TypeString, value)
+	}
+	if tu.mutation.DescriptionCleared() {
+		_spec.ClearField(task.FieldDescription, field.TypeString)
+	}
+	if value, ok := tu.mutation.Deadline(); ok {
+		_spec.SetField(task.FieldDeadline, field.TypeTime, value)
+	}
+	if tu.mutation.DeadlineCleared() {
+		_spec.ClearField(task.FieldDeadline, field.TypeTime)
+	}
+	if value, ok := tu.mutation.CompletedAt(); ok {
+		_spec.SetField(task.FieldCompletedAt, field.TypeTime, value)
+	}
+	if tu.mutation.CompletedAtCleared() {
+		_spec.ClearField(task.FieldCompletedAt, field.TypeTime)
+	}
+	if value, ok := tu.mutation.CreatedAt(); ok {
+		_spec.SetField(task.FieldCreatedAt, field.TypeTime, value)
+	}
+	if value, ok := tu.mutation.UpdatedAt(); ok {
+		_spec.SetField(task.FieldUpdatedAt, field.TypeTime, value)
+	}
+	if tu.mutation.UpdatedAtCleared() {
+		_spec.ClearField(task.FieldUpdatedAt, field.TypeTime)
+	}
 	if n, err = sqlgraph.UpdateNodes(ctx, tu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
 			err = &NotFoundError{task.Label}
@@ -86,6 +209,98 @@ type TaskUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *TaskMutation
+}
+
+// SetName sets the "name" field.
+func (tuo *TaskUpdateOne) SetName(s string) *TaskUpdateOne {
+	tuo.mutation.SetName(s)
+	return tuo
+}
+
+// SetDescription sets the "description" field.
+func (tuo *TaskUpdateOne) SetDescription(s string) *TaskUpdateOne {
+	tuo.mutation.SetDescription(s)
+	return tuo
+}
+
+// SetNillableDescription sets the "description" field if the given value is not nil.
+func (tuo *TaskUpdateOne) SetNillableDescription(s *string) *TaskUpdateOne {
+	if s != nil {
+		tuo.SetDescription(*s)
+	}
+	return tuo
+}
+
+// ClearDescription clears the value of the "description" field.
+func (tuo *TaskUpdateOne) ClearDescription() *TaskUpdateOne {
+	tuo.mutation.ClearDescription()
+	return tuo
+}
+
+// SetDeadline sets the "deadline" field.
+func (tuo *TaskUpdateOne) SetDeadline(t time.Time) *TaskUpdateOne {
+	tuo.mutation.SetDeadline(t)
+	return tuo
+}
+
+// SetNillableDeadline sets the "deadline" field if the given value is not nil.
+func (tuo *TaskUpdateOne) SetNillableDeadline(t *time.Time) *TaskUpdateOne {
+	if t != nil {
+		tuo.SetDeadline(*t)
+	}
+	return tuo
+}
+
+// ClearDeadline clears the value of the "deadline" field.
+func (tuo *TaskUpdateOne) ClearDeadline() *TaskUpdateOne {
+	tuo.mutation.ClearDeadline()
+	return tuo
+}
+
+// SetCompletedAt sets the "completed_at" field.
+func (tuo *TaskUpdateOne) SetCompletedAt(t time.Time) *TaskUpdateOne {
+	tuo.mutation.SetCompletedAt(t)
+	return tuo
+}
+
+// SetNillableCompletedAt sets the "completed_at" field if the given value is not nil.
+func (tuo *TaskUpdateOne) SetNillableCompletedAt(t *time.Time) *TaskUpdateOne {
+	if t != nil {
+		tuo.SetCompletedAt(*t)
+	}
+	return tuo
+}
+
+// ClearCompletedAt clears the value of the "completed_at" field.
+func (tuo *TaskUpdateOne) ClearCompletedAt() *TaskUpdateOne {
+	tuo.mutation.ClearCompletedAt()
+	return tuo
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (tuo *TaskUpdateOne) SetCreatedAt(t time.Time) *TaskUpdateOne {
+	tuo.mutation.SetCreatedAt(t)
+	return tuo
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (tuo *TaskUpdateOne) SetUpdatedAt(t time.Time) *TaskUpdateOne {
+	tuo.mutation.SetUpdatedAt(t)
+	return tuo
+}
+
+// SetNillableUpdatedAt sets the "updated_at" field if the given value is not nil.
+func (tuo *TaskUpdateOne) SetNillableUpdatedAt(t *time.Time) *TaskUpdateOne {
+	if t != nil {
+		tuo.SetUpdatedAt(*t)
+	}
+	return tuo
+}
+
+// ClearUpdatedAt clears the value of the "updated_at" field.
+func (tuo *TaskUpdateOne) ClearUpdatedAt() *TaskUpdateOne {
+	tuo.mutation.ClearUpdatedAt()
+	return tuo
 }
 
 // Mutation returns the TaskMutation object of the builder.
@@ -158,6 +373,36 @@ func (tuo *TaskUpdateOne) sqlSave(ctx context.Context) (_node *Task, err error) 
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := tuo.mutation.Name(); ok {
+		_spec.SetField(task.FieldName, field.TypeString, value)
+	}
+	if value, ok := tuo.mutation.Description(); ok {
+		_spec.SetField(task.FieldDescription, field.TypeString, value)
+	}
+	if tuo.mutation.DescriptionCleared() {
+		_spec.ClearField(task.FieldDescription, field.TypeString)
+	}
+	if value, ok := tuo.mutation.Deadline(); ok {
+		_spec.SetField(task.FieldDeadline, field.TypeTime, value)
+	}
+	if tuo.mutation.DeadlineCleared() {
+		_spec.ClearField(task.FieldDeadline, field.TypeTime)
+	}
+	if value, ok := tuo.mutation.CompletedAt(); ok {
+		_spec.SetField(task.FieldCompletedAt, field.TypeTime, value)
+	}
+	if tuo.mutation.CompletedAtCleared() {
+		_spec.ClearField(task.FieldCompletedAt, field.TypeTime)
+	}
+	if value, ok := tuo.mutation.CreatedAt(); ok {
+		_spec.SetField(task.FieldCreatedAt, field.TypeTime, value)
+	}
+	if value, ok := tuo.mutation.UpdatedAt(); ok {
+		_spec.SetField(task.FieldUpdatedAt, field.TypeTime, value)
+	}
+	if tuo.mutation.UpdatedAtCleared() {
+		_spec.ClearField(task.FieldUpdatedAt, field.TypeTime)
 	}
 	_node = &Task{config: tuo.config}
 	_spec.Assign = _node.assignValues

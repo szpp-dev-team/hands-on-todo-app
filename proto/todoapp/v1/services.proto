@@ -16,4 +16,7 @@ service HealthcheckService {
 
 service TodoappService {
   rpc GetTask(GetTaskRequest) returns (GetTaskResponse);
+  rpc GetTaskList(GetTaskListRequest) returns (GetTaskListResponse);
+  rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse);
+  rpc SearchByTag(SearchByTagRequest) returns (SearchByTagResponse);
 }
