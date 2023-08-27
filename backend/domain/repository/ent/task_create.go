@@ -10,6 +10,7 @@ import (
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/szpp-dev-team/hands-on-todo-app/domain/repository/ent/tag"
 	"github.com/szpp-dev-team/hands-on-todo-app/domain/repository/ent/task"
 )
 
@@ -92,6 +93,21 @@ func (tc *TaskCreate) SetNillableUpdatedAt(t *time.Time) *TaskCreate {
 func (tc *TaskCreate) SetID(i int) *TaskCreate {
 	tc.mutation.SetID(i)
 	return tc
+}
+
+// AddTagIDs adds the "tags" edge to the Tag entity by IDs.
+func (tc *TaskCreate) AddTagIDs(ids ...int) *TaskCreate {
+	tc.mutation.AddTagIDs(ids...)
+	return tc
+}
+
+// AddTags adds the "tags" edges to the Tag entity.
+func (tc *TaskCreate) AddTags(t ...*Tag) *TaskCreate {
+	ids := make([]int, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tc.AddTagIDs(ids...)
 }
 
 // Mutation returns the TaskMutation object of the builder.
@@ -189,6 +205,22 @@ func (tc *TaskCreate) createSpec() (*Task, *sqlgraph.CreateSpec) {
 	if value, ok := tc.mutation.UpdatedAt(); ok {
 		_spec.SetField(task.FieldUpdatedAt, field.TypeTime, value)
 		_node.UpdatedAt = &value
+	}
+	if nodes := tc.mutation.TagsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   task.TagsTable,
+			Columns: task.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tag.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

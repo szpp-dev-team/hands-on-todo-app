@@ -12,6 +12,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	"github.com/szpp-dev-team/hands-on-todo-app/domain/repository/ent/predicate"
+	"github.com/szpp-dev-team/hands-on-todo-app/domain/repository/ent/tag"
 	"github.com/szpp-dev-team/hands-on-todo-app/domain/repository/ent/task"
 )
 
@@ -120,9 +121,45 @@ func (tu *TaskUpdate) ClearUpdatedAt() *TaskUpdate {
 	return tu
 }
 
+// AddTagIDs adds the "tags" edge to the Tag entity by IDs.
+func (tu *TaskUpdate) AddTagIDs(ids ...int) *TaskUpdate {
+	tu.mutation.AddTagIDs(ids...)
+	return tu
+}
+
+// AddTags adds the "tags" edges to the Tag entity.
+func (tu *TaskUpdate) AddTags(t ...*Tag) *TaskUpdate {
+	ids := make([]int, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tu.AddTagIDs(ids...)
+}
+
 // Mutation returns the TaskMutation object of the builder.
 func (tu *TaskUpdate) Mutation() *TaskMutation {
 	return tu.mutation
+}
+
+// ClearTags clears all "tags" edges to the Tag entity.
+func (tu *TaskUpdate) ClearTags() *TaskUpdate {
+	tu.mutation.ClearTags()
+	return tu
+}
+
+// RemoveTagIDs removes the "tags" edge to Tag entities by IDs.
+func (tu *TaskUpdate) RemoveTagIDs(ids ...int) *TaskUpdate {
+	tu.mutation.RemoveTagIDs(ids...)
+	return tu
+}
+
+// RemoveTags removes "tags" edges to Tag entities.
+func (tu *TaskUpdate) RemoveTags(t ...*Tag) *TaskUpdate {
+	ids := make([]int, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tu.RemoveTagIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -190,6 +227,51 @@ func (tu *TaskUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if tu.mutation.UpdatedAtCleared() {
 		_spec.ClearField(task.FieldUpdatedAt, field.TypeTime)
+	}
+	if tu.mutation.TagsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   task.TagsTable,
+			Columns: task.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tag.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.RemovedTagsIDs(); len(nodes) > 0 && !tu.mutation.TagsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   task.TagsTable,
+			Columns: task.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tag.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tu.mutation.TagsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   task.TagsTable,
+			Columns: task.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tag.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, tu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -303,9 +385,45 @@ func (tuo *TaskUpdateOne) ClearUpdatedAt() *TaskUpdateOne {
 	return tuo
 }
 
+// AddTagIDs adds the "tags" edge to the Tag entity by IDs.
+func (tuo *TaskUpdateOne) AddTagIDs(ids ...int) *TaskUpdateOne {
+	tuo.mutation.AddTagIDs(ids...)
+	return tuo
+}
+
+// AddTags adds the "tags" edges to the Tag entity.
+func (tuo *TaskUpdateOne) AddTags(t ...*Tag) *TaskUpdateOne {
+	ids := make([]int, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tuo.AddTagIDs(ids...)
+}
+
 // Mutation returns the TaskMutation object of the builder.
 func (tuo *TaskUpdateOne) Mutation() *TaskMutation {
 	return tuo.mutation
+}
+
+// ClearTags clears all "tags" edges to the Tag entity.
+func (tuo *TaskUpdateOne) ClearTags() *TaskUpdateOne {
+	tuo.mutation.ClearTags()
+	return tuo
+}
+
+// RemoveTagIDs removes the "tags" edge to Tag entities by IDs.
+func (tuo *TaskUpdateOne) RemoveTagIDs(ids ...int) *TaskUpdateOne {
+	tuo.mutation.RemoveTagIDs(ids...)
+	return tuo
+}
+
+// RemoveTags removes "tags" edges to Tag entities.
+func (tuo *TaskUpdateOne) RemoveTags(t ...*Tag) *TaskUpdateOne {
+	ids := make([]int, len(t))
+	for i := range t {
+		ids[i] = t[i].ID
+	}
+	return tuo.RemoveTagIDs(ids...)
 }
 
 // Where appends a list predicates to the TaskUpdate builder.
@@ -403,6 +521,51 @@ func (tuo *TaskUpdateOne) sqlSave(ctx context.Context) (_node *Task, err error) 
 	}
 	if tuo.mutation.UpdatedAtCleared() {
 		_spec.ClearField(task.FieldUpdatedAt, field.TypeTime)
+	}
+	if tuo.mutation.TagsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   task.TagsTable,
+			Columns: task.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tag.FieldID, field.TypeInt),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.RemovedTagsIDs(); len(nodes) > 0 && !tuo.mutation.TagsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   task.TagsTable,
+			Columns: task.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tag.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := tuo.mutation.TagsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2M,
+			Inverse: false,
+			Table:   task.TagsTable,
+			Columns: task.TagsPrimaryKey,
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(tag.FieldID, field.TypeInt),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &Task{config: tuo.config}
 	_spec.Assign = _node.assignValues

@@ -24,7 +24,7 @@ func NewInteractor(entClient *ent.Client, logger *slog.Logger) *Interactor {
 }
 
 func (i *Interactor) GetTask(ctx context.Context, req *pb.GetTaskRequest) (*pb.GetTaskResponse, error) {
-	task, err := i.entClient.Task.Query().Where(enttask.ID(int(req.Id))).Only(ctx)
+	task, err := i.entClient.Task.Query().WithTags().Where(enttask.ID(int(req.Id))).Only(ctx)
 	if err != nil {
 		if ent.IsNotFound(err) {
 			return nil, status.Error(codes.NotFound, "the task is not found")
@@ -87,7 +87,10 @@ func toPbTask(t *ent.Task) *pb.Task {
 		Description: t.Description,
 		Deadline:    toTimestamppb(t.Deadline),
 		CompletedAt: toTimestamppb(t.CompletedAt),
-		CreatedAt:   timestamppb.New(t.CreatedAt),
-		UpdatedAt:   toTimestamppb(t.UpdatedAt),
+		Tags: lo.Map(t.Edges.Tags, func(tag *ent.Tag, _ int) string {
+			return tag.Name
+		}),
+		CreatedAt: timestamppb.New(t.CreatedAt),
+		UpdatedAt: toTimestamppb(t.UpdatedAt),
 	}
 }
