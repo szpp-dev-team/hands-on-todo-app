@@ -9,9 +9,12 @@ require (
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.0-rc.5
 	github.com/kelseyhightower/envconfig v1.4.0
+	github.com/samber/lo v1.38.1
 	github.com/szpp-dev-team/hands-on-todo-app/proto-gen/go v0.0.0-00010101000000-000000000000
 	golang.org/x/exp v0.0.0-20230811145659-89c5cff77bcb
+	golang.org/x/net v0.14.0
 	google.golang.org/grpc v1.57.0
+	google.golang.org/protobuf v1.31.0
 )
 
 require (
@@ -26,9 +29,7 @@ require (
 	github.com/mitchellh/go-wordwrap v0.0.0-20150314170334-ad45545899c7 // indirect
 	github.com/zclconf/go-cty v1.8.0 // indirect
 	golang.org/x/mod v0.11.0 // indirect
-	golang.org/x/net v0.14.0 // indirect
 	golang.org/x/sys v0.11.0 // indirect
 	golang.org/x/text v0.12.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230807174057-1744710a1577 // indirect
-	google.golang.org/protobuf v1.31.0 // indirect
 )
